@@ -1,26 +1,69 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.css';
+import CalculatorKeys from './components/CalculatorKeys/CalculatorKeys';
+import { OPERATORS } from './utils/constant';
+import { isValidExpression } from './utils/utility';
+import { expression } from '@babel/template';
+
+class App extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      value: ''
+    }
+
+    this.handleKeyPressed = this.handleKeyPressed.bind(this);
+  }
+
+  handleKeyPressed(key){
+    let regex = /^[-+\/*]?\d+[-+\/*]{1}\d+$/g;
+    const {allClear, equal, decimal, ...operatorObj} = OPERATORS;
+    const operators = Object.values(operatorObj);
+    let value = this.state.value;
+    if(operators.includes(key) && regex.test(this.state.value)){
+      value = eval(this.state.value);
+    }
+
+    if(isValidExpression(key, this.state.value)){
+      switch(key){
+        case OPERATORS.allClear: return this.setState({ value: '' });
+        case OPERATORS.add: return this.setState(state => ({ value: value + key}));
+        case OPERATORS.multiply: return this.setState(state => ({ value: value + key}));
+        case OPERATORS.minus: return this.setState(state => ({ value: value + key}));
+        case OPERATORS.division: return this.setState(state => ({ value: value + key}));
+        case OPERATORS.decimal: return this.setState(state => ({ value: state.value + key}));
+        case OPERATORS.equal: if(regex.test(this.state.value)){
+              let result = eval(this.state.value)
+              this.setState({ value: result});
+            }
+            break;
+        default: return this.setState(state => ({ value: state.value + key}));
+      }
+    }
+    
+  }
+
+  componentDidUpdate(){
+    // debugger;
+    // let regex = /^[-+\/*]?\d+[-+\/*]{1}\d+$/g;
+    // if(regex.test(this.state.value)){
+    //   let result = eval(this.state.value);
+    //   this.setState({ value: result});
+    // }
+  }
+
+  render(){
+    return (
+      <div className="calculator">  
+        <input type="text" className="calculator-screen" value={this.state.value} placeholder="0" disabled />  
+        <CalculatorKeys 
+          handleKeyPressed={this.handleKeyPressed}
+        />      
+      </div>
+    );
+  }
 }
 
 export default App;
