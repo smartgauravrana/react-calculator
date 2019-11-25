@@ -6,7 +6,3 @@ export const isValidExpression = (key, expression) => {
     let operators = Object.values(operatorsObj);
     return (expression ==='' && operators.includes(key)) || (operators.includes(lastSymbol) && operators.includes(key)) ? false: true;
 }
-
-export const calculateResult = (expression) => {
-    return eval(expression);
-}

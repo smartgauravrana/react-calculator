@@ -4,7 +4,6 @@ import './App.css';
 import CalculatorKeys from './components/CalculatorKeys/CalculatorKeys';
 import { OPERATORS } from './utils/constant';
 import { isValidExpression } from './utils/utility';
-import { expression } from '@babel/template';
 
 class App extends Component{
 
@@ -43,15 +42,6 @@ class App extends Component{
       }
     }
     
-  }
-
-  componentDidUpdate(){
-    // debugger;
-    // let regex = /^[-+\/*]?\d+[-+\/*]{1}\d+$/g;
-    // if(regex.test(this.state.value)){
-    //   let result = eval(this.state.value);
-    //   this.setState({ value: result});
-    // }
   }
 
   render(){
